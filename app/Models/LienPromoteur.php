@@ -33,11 +33,33 @@ class LienPromoteur extends Model
         return $this->hasMany(Commande::class, 'lien_id');
     }
 
+    /** Nombre de clics enregistrés sur ce lien. */
+    public function nombreClics(): int
+    {
+        return $this->clics()->count();
+    }
+
+    /** Nombre de commandes payées ou livrées passées par ce lien. */
+    public function nombreVentes(): int
+    {
+        return $this->commandes()->whereIn('statut', ['payee', 'livree'])->count();
+    }
+
+    /** Commissions validées ou versées sur les commandes de ce lien. */
+    public function gains(): float
+    {
+        return (float) Transaction::query()
+            ->where('type', 'commission')
+            ->whereIn('statut', ['validee', 'payee'])
+            ->whereHas('commande', fn ($q) => $q->where('lien_id', $this->id))
+            ->sum('montant');
+    }
+
     /** Code unique à placer dans ?ref=... */
     public static function genererCode(): string
     {
         do {
-            $code = 'P' . strtoupper(Str::random(7));
+            $code = 'P'.strtoupper(Str::random(7));
         } while (static::where('code', $code)->exists());
 
         return $code;
