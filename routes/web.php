@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Marchand\ArticleController;
+use App\Http\Controllers\Marchand\BoutiqueController;
+use App\Http\Controllers\Marchand\TableauDeBordController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +20,24 @@ Route::get('/promoteur/liens', fn () => view('espace.page', ['titre' => 'Mes lie
 Route::get('/promoteur/portefeuille', fn () => view('espace.page', ['titre' => 'Portefeuille', 'actif' => 'portefeuille']))
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
 
-Route::get('/marchand', fn () => view('espace.page', ['titre' => 'Tableau de bord', 'actif' => 'tableau']))
+Route::get('/marchand', TableauDeBordController::class)
     ->middleware(['auth', 'role:marchand'])->name('marchand');
-Route::get('/marchand/articles', fn () => view('espace.page', ['titre' => 'Articles', 'actif' => 'articles']))
+Route::get('/marchand/boutique', [BoutiqueController::class, 'edit'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.boutique.edit');
+Route::put('/marchand/boutique', [BoutiqueController::class, 'update'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.boutique.update');
+Route::get('/marchand/articles', [ArticleController::class, 'index'])
     ->middleware(['auth', 'role:marchand'])->name('marchand.articles');
+Route::get('/marchand/articles/create', [ArticleController::class, 'create'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.articles.create');
+Route::post('/marchand/articles', [ArticleController::class, 'store'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.articles.store');
+Route::get('/marchand/articles/{article}/edit', [ArticleController::class, 'edit'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.articles.edit');
+Route::put('/marchand/articles/{article}', [ArticleController::class, 'update'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.articles.update');
+Route::delete('/marchand/articles/{article}', [ArticleController::class, 'destroy'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.articles.destroy');
 Route::get('/marchand/commandes', fn () => view('espace.page', ['titre' => 'Commandes', 'actif' => 'commandes']))
     ->middleware(['auth', 'role:marchand'])->name('marchand.commandes');
 
