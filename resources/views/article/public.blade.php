@@ -44,9 +44,35 @@
                         <p class="font-display text-lg font-bold text-secondaire">Article épuisé</p>
                     </div>
                 @else
-                    {{-- Emplacement du formulaire de commande (étape 5) --}}
                     <div id="zone-commande" class="bg-white border border-bordure-carte rounded-2xl p-4">
-                        <p class="text-sm text-secondaire text-center">Le formulaire de commande arrive prochainement.</p>
+                        <h2 class="font-display font-bold mb-3">Commander</h2>
+                        <p class="text-xs text-secondaire mb-3">Paiement par Mobile Money — aucun compte requis.</p>
+                        <form method="POST" action="{{ route('commande.store', $article) }}" class="space-y-3">
+                            @csrf
+                            <div>
+                                <x-input-label for="nom" value="Nom complet" />
+                                <x-text-input id="nom" name="nom" :value="old('nom')" required autocomplete="name" class="block mt-1 w-full min-h-[48px]" />
+                                <x-input-error :messages="$errors->get('nom')" class="mt-1" />
+                            </div>
+                            <div>
+                                <x-input-label for="telephone" value="Téléphone" />
+                                <x-text-input id="telephone" name="telephone" type="tel" :value="old('telephone')" required autocomplete="tel" class="block mt-1 w-full min-h-[48px]" />
+                                <x-input-error :messages="$errors->get('telephone')" class="mt-1" />
+                            </div>
+                            <div>
+                                <x-input-label for="adresse_livraison" value="Adresse de livraison" />
+                                <textarea id="adresse_livraison" name="adresse_livraison" rows="2" required class="block mt-1 w-full rounded-xl border-bordure-champ text-encre shadow-sm focus:border-vert focus:ring-vert">{{ old('adresse_livraison') }}</textarea>
+                                <x-input-error :messages="$errors->get('adresse_livraison')" class="mt-1" />
+                            </div>
+                            <div>
+                                <x-input-label for="quantite" :value="'Quantité (stock : '.$article->stock.')'" />
+                                <x-text-input id="quantite" name="quantite" type="number" min="1" max="{{ $article->stock }}" value="{{ old('quantite', 1) }}" required class="block mt-1 w-full min-h-[48px]" />
+                                <x-input-error :messages="$errors->get('quantite')" class="mt-1" />
+                            </div>
+                            <button type="submit" class="w-full min-h-[48px] rounded-xl bg-vert text-white font-semibold">
+                                Continuer vers le paiement
+                            </button>
+                        </form>
                     </div>
                 @endif
             </main>
