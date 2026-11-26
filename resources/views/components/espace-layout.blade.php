@@ -90,5 +90,6 @@
                 </div>
             </nav>
         </div>
+        @stack('scripts')
     </body>
 </html>

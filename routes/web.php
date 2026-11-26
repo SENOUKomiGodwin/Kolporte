@@ -4,6 +4,10 @@ use App\Http\Controllers\Marchand\ArticleController;
 use App\Http\Controllers\Marchand\BoutiqueController;
 use App\Http\Controllers\Marchand\TableauDeBordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Promoteur\ArticleController as PromoteurArticleController;
+use App\Http\Controllers\Promoteur\CatalogueController;
+use App\Http\Controllers\Promoteur\LiensController;
+use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -13,12 +17,20 @@ Route::get('/', function () {
 });
 
 // Espaces par rôle (contenu des pages dans les étapes suivantes)
-Route::get('/promoteur', fn () => view('espace.page', ['titre' => 'Catalogue', 'actif' => 'catalogue']))
+Route::get('/promoteur', CatalogueController::class)
     ->middleware(['auth', 'role:promoteur'])->name('promoteur');
-Route::get('/promoteur/liens', fn () => view('espace.page', ['titre' => 'Mes liens', 'actif' => 'liens']))
+Route::get('/promoteur/articles/{article}', [PromoteurArticleController::class, 'show'])
+    ->middleware(['auth', 'role:promoteur'])->name('promoteur.article');
+Route::post('/promoteur/articles/{article}/lien', [PromoteurArticleController::class, 'genererLien'])
+    ->middleware(['auth', 'role:promoteur'])->name('promoteur.article.lien');
+Route::get('/promoteur/liens', [LiensController::class, 'index'])
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.liens');
 Route::get('/promoteur/portefeuille', fn () => view('espace.page', ['titre' => 'Portefeuille', 'actif' => 'portefeuille']))
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
+
+// Page publique de l'article (contenu à l'étape 4)
+Route::get('/p/{article}', fn (Article $article) => view('article.public', ['article' => $article]))
+    ->name('article.public');
 
 Route::get('/marchand', TableauDeBordController::class)
     ->middleware(['auth', 'role:marchand'])->name('marchand');
