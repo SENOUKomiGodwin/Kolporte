@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'retrait_minimum' => (int) env('KOLPORTE_RETRAIT_MINIMUM', 5000),
+    'retrait_minimum' => (int) env('KOLPORTE_RETRAIT_MINIMUM', 2000),
 
     'validite_lien_jours' => (int) env('KOLPORTE_VALIDITE_LIEN_JOURS', 7),
 
