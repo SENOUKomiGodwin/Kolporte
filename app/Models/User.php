@@ -51,6 +51,16 @@ class User extends Authenticatable
         ];
     }
 
+    /** Chemin de l'espace correspondant au rôle. */
+    public function cheminEspace(): string
+    {
+        return match ($this->role) {
+            'marchand' => '/marchand',
+            'admin' => '/admin',
+            default => '/promoteur',
+        };
+    }
+
     public function portefeuille(): HasOne
     {
         return $this->hasOne(Portefeuille::class, 'utilisateur_id');
