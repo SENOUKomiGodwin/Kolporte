@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ArticlePublicController;
+use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\FedaPayWebhookController;
 use App\Http\Controllers\Marchand\ArticleController;
 use App\Http\Controllers\Marchand\BoutiqueController;
 use App\Http\Controllers\Marchand\TableauDeBordController;
@@ -29,9 +31,25 @@ Route::get('/promoteur/liens', [LiensController::class, 'index'])
 Route::get('/promoteur/portefeuille', fn () => view('espace.page', ['titre' => 'Portefeuille', 'actif' => 'portefeuille']))
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
 
-// Page publique de l'article (contenu à l'étape 4)
+// Page publique de l'article
 Route::get('/p/{article}', ArticlePublicController::class)
     ->name('article.public');
+Route::post('/p/{article}/commander', [CommandeController::class, 'store'])
+    ->name('commande.store');
+Route::get('/commande/{commande}/paiement', [CommandeController::class, 'paiement'])
+    ->name('commande.paiement');
+Route::post('/commande/{commande}/paiement', [CommandeController::class, 'payer'])
+    ->name('commande.paiement.confirmer');
+Route::post('/commande/{commande}/paiement/echec', [CommandeController::class, 'echecPaiement'])
+    ->name('commande.paiement.echec');
+Route::get('/commande/{commande}/confirmation', [CommandeController::class, 'confirmation'])
+    ->name('commande.confirmation');
+Route::get('/commande/{commande}/echec', [CommandeController::class, 'echec'])
+    ->name('commande.echec');
+Route::get('/paiement/fedapay/retour', [CommandeController::class, 'fedapayRetour'])
+    ->name('paiement.fedapay.retour');
+Route::post('/webhooks/fedapay', FedaPayWebhookController::class)
+    ->name('webhooks.fedapay');
 
 Route::get('/marchand', TableauDeBordController::class)
     ->middleware(['auth', 'role:marchand'])->name('marchand');

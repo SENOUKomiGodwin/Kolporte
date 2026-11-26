@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4c4d5d523420e3a7206dc5772a88fc6",
+    "content-hash": "838ed16f9b72f65053df1c5117463ad8",
     "packages": [
         {
             "name": "brick/math",
@@ -706,6 +706,59 @@
                 }
             ],
             "time": "2026-11-22T16:52:20+00:00"
+        },
+        {
+            "name": "fedapay/fedapay-php",
+            "version": "0.4.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fedapay/fedapay-php.git",
+                "reference": "c96ba2d5dce0eb00336092dfcf54499f7e4dd4bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fedapay/fedapay-php/zipball/c96ba2d5dce0eb00336092dfcf54499f7e4dd4bc",
+                "reference": "c96ba2d5dce0eb00336092dfcf54499f7e4dd4bc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.7 || ^9.0",
+                "squizlabs/php_codesniffer": "^3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FedaPay\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "FedaPay and contributors",
+                    "homepage": "https://github.com/fedapay/fedapay-php/contributors"
+                }
+            ],
+            "description": "PHP library for FedaPay https://fedapay.com",
+            "homepage": "https://fedapay.com/",
+            "keywords": [
+                "api",
+                "fedapay",
+                "payment processing"
+            ],
+            "support": {
+                "issues": "https://github.com/fedapay/fedapay-php/issues",
+                "source": "https://github.com/fedapay/fedapay-php/tree/0.4.9"
+            },
+            "time": "2026-10-05T14:30:22+00:00"
         },
         {
             "name": "fruitcake/php-cors",

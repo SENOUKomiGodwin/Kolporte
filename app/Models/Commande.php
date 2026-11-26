@@ -12,7 +12,7 @@ class Commande extends Model
 
     protected $fillable = [
         'lien_id', 'nom_acheteur', 'telephone_acheteur',
-        'adresse_livraison', 'montant_total', 'statut',
+        'adresse_livraison', 'montant_total', 'statut', 'reference_paiement',
     ];
 
     protected $casts = ['montant_total' => 'decimal:2'];
