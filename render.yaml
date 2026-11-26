@@ -1,0 +1,40 @@
+# Blueprint Render : New > Blueprint, puis choisir le dépôt Git.
+services:
+  - type: web
+    name: kolporte
+    runtime: docker
+    plan: free
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: Kolporte
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY            # php artisan key:generate --show
+        sync: false
+      - key: APP_URL            # ex. https://kolporte.onrender.com
+        sync: false
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: SESSION_DRIVER
+        value: database
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: CLOUDINARY_URL     # cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+        sync: false
+      - key: FEDAPAY_ENV
+        value: sandbox
+      - key: FEDAPAY_SECRET_KEY
+        sync: false
