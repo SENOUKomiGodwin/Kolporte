@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticlePublicController;
 use App\Http\Controllers\Marchand\ArticleController;
 use App\Http\Controllers\Marchand\BoutiqueController;
 use App\Http\Controllers\Marchand\TableauDeBordController;
@@ -29,7 +30,7 @@ Route::get('/promoteur/portefeuille', fn () => view('espace.page', ['titre' => '
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
 
 // Page publique de l'article (contenu à l'étape 4)
-Route::get('/p/{article}', fn (Article $article) => view('article.public', ['article' => $article]))
+Route::get('/p/{article}', ArticlePublicController::class)
     ->name('article.public');
 
 Route::get('/marchand', TableauDeBordController::class)
