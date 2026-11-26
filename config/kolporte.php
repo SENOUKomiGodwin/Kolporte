@@ -23,4 +23,12 @@ return [
     */
     'paiement' => env('KOLPORTE_PAIEMENT', 'simule'),
 
+    /*
+    | Clé API et environnement FedaPay (sandbox|live). Jamais en dur.
+    */
+    'fedapay' => [
+        'secret' => env('FEDAPAY_SECRET_KEY'),
+        'env' => env('FEDAPAY_ENV', 'sandbox'),
+    ],
+
 ];
