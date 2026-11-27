@@ -5,11 +5,13 @@ use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FedaPayWebhookController;
 use App\Http\Controllers\Marchand\ArticleController;
 use App\Http\Controllers\Marchand\BoutiqueController;
+use App\Http\Controllers\Marchand\CommandeController as MarchandCommandeController;
 use App\Http\Controllers\Marchand\TableauDeBordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Promoteur\ArticleController as PromoteurArticleController;
 use App\Http\Controllers\Promoteur\CatalogueController;
 use App\Http\Controllers\Promoteur\LiensController;
+use App\Http\Controllers\Promoteur\PortefeuilleController as PromoteurPortefeuilleController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +30,7 @@ Route::post('/promoteur/articles/{article}/lien', [PromoteurArticleController::c
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.article.lien');
 Route::get('/promoteur/liens', [LiensController::class, 'index'])
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.liens');
-Route::get('/promoteur/portefeuille', fn () => view('espace.page', ['titre' => 'Portefeuille', 'actif' => 'portefeuille']))
+Route::get('/promoteur/portefeuille', [PromoteurPortefeuilleController::class, 'index'])
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
 
 // Page publique de l'article
@@ -69,8 +71,14 @@ Route::put('/marchand/articles/{article}', [ArticleController::class, 'update'])
     ->middleware(['auth', 'role:marchand'])->name('marchand.articles.update');
 Route::delete('/marchand/articles/{article}', [ArticleController::class, 'destroy'])
     ->middleware(['auth', 'role:marchand'])->name('marchand.articles.destroy');
-Route::get('/marchand/commandes', fn () => view('espace.page', ['titre' => 'Commandes', 'actif' => 'commandes']))
+Route::get('/marchand/commandes', [MarchandCommandeController::class, 'index'])
     ->middleware(['auth', 'role:marchand'])->name('marchand.commandes');
+Route::get('/marchand/commandes/{commande}', [MarchandCommandeController::class, 'show'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.commandes.show');
+Route::post('/marchand/commandes/{commande}/livraison', [MarchandCommandeController::class, 'livrer'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.commandes.livrer');
+Route::post('/marchand/commandes/{commande}/annulation', [MarchandCommandeController::class, 'annuler'])
+    ->middleware(['auth', 'role:marchand'])->name('marchand.commandes.annuler');
 
 Route::get('/admin', fn () => view('espace.page', ['titre' => 'Administration', 'actif' => null]))
     ->middleware(['auth', 'role:admin'])->name('admin');

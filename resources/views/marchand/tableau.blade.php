@@ -57,9 +57,12 @@
                                 @endif
                             </p>
                         </div>
-                        <button type="button" disabled class="min-h-[44px] px-4 rounded-xl bg-vert-clair text-vert text-sm font-medium opacity-60 cursor-not-allowed">
-                            Valider la livraison
-                        </button>
+                        <form method="POST" action="{{ route('marchand.commandes.livrer', $commande) }}">
+                            @csrf
+                            <button type="submit" class="min-h-[44px] px-4 rounded-xl bg-vert text-white text-sm font-semibold">
+                                Valider la livraison
+                            </button>
+                        </form>
                     </li>
                 @endforeach
             </ul>

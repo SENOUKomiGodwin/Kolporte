@@ -30,6 +30,11 @@ class Article extends Model
         return $this->hasMany(LienPromoteur::class);
     }
 
+    public function lignes(): HasMany
+    {
+        return $this->hasMany(LigneCommande::class);
+    }
+
     /** Commission du promoteur pour UNE unité vendue. */
     public function calculerCommission(): float
     {
