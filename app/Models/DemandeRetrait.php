@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class DemandeRetrait extends Model
 {
@@ -21,5 +22,16 @@ class DemandeRetrait extends Model
     public function validateur(): BelongsTo
     {
         return $this->belongsTo(User::class, 'validee_par');
+    }
+
+    public function transaction(): HasOne
+    {
+        return $this->hasOne(Transaction::class);
+    }
+
+    /** Le porteur du portefeuille (promoteur). */
+    public function getPromoteurAttribute(): ?User
+    {
+        return $this->portefeuille?->utilisateur;
     }
 }
