@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\RetraitController;
+use App\Http\Controllers\Admin\UtilisateurController;
 use App\Http\Controllers\ArticlePublicController;
 use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\FedaPayWebhookController;
@@ -32,6 +34,8 @@ Route::get('/promoteur/liens', [LiensController::class, 'index'])
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.liens');
 Route::get('/promoteur/portefeuille', [PromoteurPortefeuilleController::class, 'index'])
     ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille');
+Route::post('/promoteur/portefeuille/retrait', [PromoteurPortefeuilleController::class, 'demander'])
+    ->middleware(['auth', 'role:promoteur'])->name('promoteur.portefeuille.retrait');
 
 // Page publique de l'article
 Route::get('/p/{article}', ArticlePublicController::class)
@@ -82,9 +86,13 @@ Route::post('/marchand/commandes/{commande}/annulation', [MarchandCommandeContro
 
 Route::get('/admin', fn () => view('espace.page', ['titre' => 'Administration', 'actif' => null]))
     ->middleware(['auth', 'role:admin'])->name('admin');
-Route::get('/admin/retraits', fn () => view('espace.page', ['titre' => 'Retraits', 'actif' => 'retraits']))
+Route::get('/admin/retraits', [RetraitController::class, 'index'])
     ->middleware(['auth', 'role:admin'])->name('admin.retraits');
-Route::get('/admin/utilisateurs', fn () => view('espace.page', ['titre' => 'Utilisateurs', 'actif' => 'utilisateurs']))
+Route::post('/admin/retraits/{demande}/valider', [RetraitController::class, 'valider'])
+    ->middleware(['auth', 'role:admin'])->name('admin.retraits.valider');
+Route::post('/admin/retraits/{demande}/refuser', [RetraitController::class, 'refuser'])
+    ->middleware(['auth', 'role:admin'])->name('admin.retraits.refuser');
+Route::get('/admin/utilisateurs', [UtilisateurController::class, 'index'])
     ->middleware(['auth', 'role:admin'])->name('admin.utilisateurs');
 
 Route::middleware('auth')->group(function () {

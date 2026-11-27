@@ -9,7 +9,7 @@ class Transaction extends Model
 {
     protected $table = 'transactions';
 
-    protected $fillable = ['portefeuille_id', 'commande_id', 'type', 'montant', 'statut'];
+    protected $fillable = ['portefeuille_id', 'commande_id', 'demande_retrait_id', 'type', 'montant', 'statut'];
 
     protected $casts = ['montant' => 'decimal:2'];
 
@@ -21,5 +21,10 @@ class Transaction extends Model
     public function commande(): BelongsTo
     {
         return $this->belongsTo(Commande::class);
+    }
+
+    public function demandeRetrait(): BelongsTo
+    {
+        return $this->belongsTo(DemandeRetrait::class);
     }
 }

@@ -15,9 +15,46 @@
         </div>
     </div>
 
-    <button type="button" disabled class="w-full min-h-[48px] rounded-xl bg-vert-clair text-vert font-semibold opacity-60 cursor-not-allowed mb-6">
-        Demander un retrait
-    </button>
+    @if (session('statut'))
+        <p class="mb-4 px-4 py-3 rounded-xl bg-vert-clair text-vert text-sm font-medium">{{ session('statut') }}</p>
+    @endif
+
+    <h2 class="font-display text-lg font-bold mb-3">Retrait</h2>
+    @if ($demandeEnAttente)
+        <p class="text-sm text-secondaire bg-white border border-bordure-carte rounded-2xl p-4 mb-6">
+            Un retrait est déjà en cours de traitement. Vous pourrez en demander un autre une fois qu'il sera traité.
+        </p>
+    @else
+        <form method="POST" action="{{ route('promoteur.portefeuille.retrait') }}" class="bg-white border border-bordure-carte rounded-2xl p-4 mb-6 space-y-3" x-data="{ ouvert: false }">
+            @csrf
+            <button type="button" @click="ouvert = !ouvert" class="w-full min-h-[48px] rounded-xl bg-vert text-white font-semibold">
+                Demander un retrait
+            </button>
+            <div x-show="ouvert" x-cloak class="space-y-3 pt-2">
+                <div>
+                    <x-input-label for="montant" :value="'Montant (min. '.number_format($retraitMinimum, 0, ',', ' ').' FCFA)'" />
+                    <x-text-input id="montant" name="montant" type="number" min="{{ $retraitMinimum }}" step="1" required class="block mt-1 w-full min-h-[48px]" />
+                    <x-input-error :messages="$errors->get('montant')" class="mt-1" />
+                </div>
+                <div>
+                    <x-input-label for="moyen_paiement" value="Moyen de paiement" />
+                    <select id="moyen_paiement" name="moyen_paiement" required class="block mt-1 w-full min-h-[48px] rounded-xl border-bordure-champ text-encre shadow-sm focus:border-vert focus:ring-vert">
+                        <option value="T-Money">T-Money</option>
+                        <option value="Flooz">Flooz</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('moyen_paiement')" class="mt-1" />
+                </div>
+                <div>
+                    <x-input-label for="numero_compte" value="Numéro de compte" />
+                    <x-text-input id="numero_compte" name="numero_compte" type="tel" required class="block mt-1 w-full min-h-[48px]" />
+                    <x-input-error :messages="$errors->get('numero_compte')" class="mt-1" />
+                </div>
+                <button type="submit" class="w-full min-h-[48px] rounded-xl bg-vert text-white font-semibold">
+                    Confirmer la demande
+                </button>
+            </div>
+        </form>
+    @endif
 
     <h2 class="font-display text-lg font-bold mb-3">Historique</h2>
     @if ($transactions->isEmpty())
