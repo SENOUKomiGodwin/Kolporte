@@ -23,6 +23,18 @@ Route::get('/', function () {
     return $user ? redirect($user->cheminEspace()) : redirect()->route('login');
 });
 
+// Page de repli hors-ligne de la PWA (mise en cache par le service worker)
+Route::view('/hors-ligne', 'hors-ligne')->name('hors.ligne');
+
+// Fichiers PWA : en production le serveur web les sert directement depuis public/,
+// ces routes servent de repli (tests et environnements sans docroot public).
+Route::get('/manifest.webmanifest', fn () => response()->file(public_path('manifest.webmanifest'), [
+    'Content-Type' => 'application/manifest+json',
+]))->name('pwa.manifest');
+Route::get('/sw.js', fn () => response()->file(public_path('sw.js'), [
+    'Content-Type' => 'application/javascript',
+]))->name('pwa.sw');
+
 // Espaces par rôle (contenu des pages dans les étapes suivantes)
 Route::get('/promoteur', CatalogueController::class)
     ->middleware(['auth', 'role:promoteur'])->name('promoteur');
